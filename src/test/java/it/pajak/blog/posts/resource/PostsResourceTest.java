@@ -1,4 +1,4 @@
-package it.pajak.scry.cards.resource;
+package it.pajak.blog.posts.resource;
 
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
@@ -9,21 +9,30 @@ import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
+import it.pajak.blog.posts.model.Post;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import java.io.IOException;
 
-public class CardsResourceTest extends JerseyTest {
+import static org.junit.Assert.assertEquals;
+
+public class PostsResourceTest extends JerseyTest {
 
     @Override
     protected Application configure() {
         ResourceConfig config = new ResourceConfig();
-        config.packages("it.pajak.scry.cards");
+        config.packages("it.pajak.blog");
         config.property("contextConfigLocation", "classpath:test-application-context.xml");
         return config;
     }
@@ -63,6 +72,31 @@ public class CardsResourceTest extends JerseyTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        db.getCollection("cards").drop();
+        db.getCollection("posts").drop();
+    }
+
+    @Test
+    public void should_create_new_post_ang_get_it() throws Exception {
+        Post post = new Post();
+        post.title = "post title";
+        /*
+        Entity<Post> payload = Entity.entity(post, MediaType.APPLICATION_JSON);
+
+        Response postResponse = target()
+                .path("v1/posts")
+                .request()
+                .post(payload);
+        assertEquals(HttpServletResponse.SC_CREATED, postResponse.getStatus());
+
+
+        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + postResponse.getLocation().toString());
+
+        Response response = target()
+                .path("v1/posts/" + postResponse.getLocation().toString())
+                .request()
+                .get(Response.class);
+
+        assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+        */
     }
 }

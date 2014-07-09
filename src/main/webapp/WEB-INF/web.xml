@@ -23,7 +23,7 @@
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>it.pajak.scry;com.wordnik.swagger.jersey.listing</param-value>
+            <param-value>it.pajak.blog;com.wordnik.swagger.jersey.listing</param-value>
         </init-param>
         <init-param>
             <param-name>jersey.config.beanValidation.enableOutputValidationErrorEntity.server</param-name>

@@ -1,4 +1,4 @@
-package it.pajak.scry.common;
+package it.pajak.blog.common;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -9,6 +9,7 @@ public class ExceptionHandler implements ExceptionMapper<Exception> {
 
     @Override
     public Response toResponse(Exception e) {
+        System.out.println(e.getMessage());
         return Response.noContent().status(Response.Status.INTERNAL_SERVER_ERROR).build();
     }
 }

@@ -6,10 +6,15 @@
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-    <context:component-scan base-package="it.pajak.scry" />
+    <context:component-scan base-package="it.pajak.blog" />
 
     <import resource="redis.xml" />
+
     <import resource="mongo.xml" />
+
+    <bean id="slugify" class="com.github.slugify.Slugify" />
+
+    <bean id="postListener" class="it.pajak.blog.posts.listener.PostListener" />
 
     <beans profile="dev">
         <context:property-placeholder location="classpath:dev.properties" />
@@ -18,4 +23,5 @@
     <beans profile="prod">
         <context:property-placeholder location="classpath:prod.properties" />
     </beans>
+
 </beans>
