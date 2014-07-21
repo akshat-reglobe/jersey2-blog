@@ -79,6 +79,7 @@ public class PostsResourceTest extends JerseyTest {
     public void should_create_new_post_ang_get_it() throws Exception {
         Post post = new Post();
         post.title = "post title";
+
         /*
         Entity<Post> payload = Entity.entity(post, MediaType.APPLICATION_JSON);
 
@@ -87,7 +88,6 @@ public class PostsResourceTest extends JerseyTest {
                 .request()
                 .post(payload);
         assertEquals(HttpServletResponse.SC_CREATED, postResponse.getStatus());
-
 
         System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + postResponse.getLocation().toString());
 

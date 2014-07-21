@@ -8,6 +8,7 @@ import it.pajak.blog.posts.model.Comment;
 import it.pajak.blog.posts.model.Post;
 import it.pajak.blog.posts.repository.PostsRepository;
 import org.hibernate.validator.constraints.NotBlank;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -82,7 +83,7 @@ public class PostsResource {
     }
 
     @POST
-    @ApiOperation(value = "Create post", response = Post.class)
+    @ApiOperation(value = "Create post")
     @ApiResponses(value = {
             @ApiResponse(code = HttpServletResponse.SC_CREATED, message = "Blog post created successfully"),
             @ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Bad request")
@@ -93,6 +94,24 @@ public class PostsResource {
         URI resourceURI = URI.create(uriInfo.getAbsolutePath().toString() + "/" + post.id);
 
         return Response.created(resourceURI).build();
+    }
+
+    @PUT
+    @Path("/{postId}")
+    @ApiOperation(value = "Update post")
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpServletResponse.SC_OK, message = "Blog post updated successfully"),
+            @ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "Blog post not found"),
+            @ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Bad request")
+    })
+    public Response update(@PathParam("postId") String postId, @Valid Post post) {
+        try {
+            postsRepository.updatePost(postId, post);
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.status(Response.Status.OK).build();
     }
 
     @POST
@@ -110,6 +129,7 @@ public class PostsResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
+        comment.createDate = new DateTime();
         postsRepository.addComment(postId, comment);
 
         URI resourceURI = URI.create(uriInfo.getAbsolutePath().toString() + "/" + postId);

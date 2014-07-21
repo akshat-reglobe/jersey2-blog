@@ -16,12 +16,25 @@ public class PostsRepositoryImpl implements PostsRepositoryCustom {
     private MongoTemplate mongoTemplate;
 
     public void addComment(String postId, Comment comment) {
-        Query searchUserQuery = new Query(Criteria.where("id").is(postId));
-
         mongoTemplate.updateFirst(
             Query.query(Criteria.where("id").is(postId)),
             new Update().push("comments", comment),
             Post.class
         );
+    }
+
+    public void updatePost(String postId, Post post) throws Exception {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(postId));
+
+        Post foundPost = mongoTemplate.findOne(query, Post.class);
+
+        if (null == foundPost) {
+            throw new Exception("Blog post not found");
+        }
+
+        post.id = foundPost.id;
+
+        mongoTemplate.save(post);
     }
 }

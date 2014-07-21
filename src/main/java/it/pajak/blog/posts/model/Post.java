@@ -1,7 +1,9 @@
 package it.pajak.blog.posts.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
+import it.pajak.blog.common.CustomDateSerializer;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,18 +20,11 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Post {
 
-    @XmlTransient
-    public final String id;
+    public String id;
 
     @NotBlank
     @ApiModelProperty(required = true)
     public String title;
-
-    public String slug;
-
-    @NotBlank
-    @ApiModelProperty(required = true)
-    public String excerpt;
 
     @NotBlank
     @ApiModelProperty(required = true)
@@ -37,22 +32,38 @@ public class Post {
 
     @NotBlank
     @ApiModelProperty(required = true)
+    public String author;
+
+    public String slug;
+
+    @NotBlank
+    @ApiModelProperty(required = true)
+    public String excerpt;
+
+    public List<String> tags;
+
+    public String demoUrl;
+
+    public String repositoryUrl;
+
+    @NotBlank
+    @ApiModelProperty(required = true)
     public String type;
 
+    @NotBlank
     @ApiModelProperty(required = true)
-    public boolean isMore;
+    public String section;
+
+    @ApiModelProperty(required = true)
+    public boolean extended;
+
+    @ApiModelProperty(required = true)
+    public boolean visible;
 
     public List<Comment> comments;
 
     public List<Image> images;
 
-    private DateTime createDate;
-
-    public Post() {
-        this(null);
-    }
-
-    public Post(String id) {
-        this.id = id;
-    }
+    @JsonSerialize(using = CustomDateSerializer.class)
+    public DateTime createDate;
 }

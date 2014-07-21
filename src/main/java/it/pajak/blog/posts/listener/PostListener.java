@@ -16,6 +16,10 @@ public class PostListener extends AbstractMongoEventListener<Post> {
     @Override
     public void onBeforeSave(Post post, DBObject dbo) {
         dbo.put("slug", slugify.slugify(post.title));
-        dbo.put("createDate", new Date());
+
+        // update detection
+        if (null == post.id) {
+            dbo.put("createDate", new Date());
+        }
     }
 }
